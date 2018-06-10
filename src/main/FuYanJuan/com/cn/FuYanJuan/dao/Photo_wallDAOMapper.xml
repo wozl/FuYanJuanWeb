@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.FuYanJuan.dao.Photo_wallDAO">
+	<sql id="list">
+		id,FileUrl,Photo_Description,Uploader
+	</sql>
+	<insert id="addPhoto" parameterType="com.cn.FuYanJuan.bean.Photo_wall">
+		insert into photo_wall values(null,#{FileUrl},#{Photo_Description},#{Uploader});
+	</insert>
+	
+	<select id="allPhoto" resultType="Photo_wall">
+		select <include refid="list"/> from photo_wall;
+	</select>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+      	 http://www.springframework.org/schema/beans 
+      	 http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+      	 http://www.springframework.org/schema/tx 
+     	  http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+      	 http://www.springframework.org/schema/context
+      	 http://www.springframework.org/schema/context/spring-context-4.0.xsd
+      	 http://www.springframework.org/schema/aop 
+      	 http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+      	 http://www.springframework.org/schema/mvc
+   	 http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+   	 <!-- 开启注解扫描，扫描controller层 -->
+   	 <context:annotation-config/>
+   	 <context:component-scan base-package="com.cn.FuYanJuan.controller"/>
+   	 <!-- 开启注解扫描驱动 -->
+   	 <mvc:annotation-driven/>
+   	 <!-- 创建视图解析器 -->
+   	 <bean id="view" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+   	 		<!-- 前缀 -->
+   	 		<property name="prefix" value="/WEB-INF/"></property>
+   	 		<!-- 后缀-->
+   	 		<property name="suffix" value=".jsp"></property>
+   	 </bean>
+   	 <!-- 创建拦截器 -->
+   	 <!-- <mvc:interceptors>
+   	 	<mvc:interceptor>
+   	 	拦截所有请求
+   	 		<mvc:mapping path="/**"/>
+   	 		自定义拦截器的类
+   	 		<bean class="com.cn.FuYanJuan.util.AuthorizedInterceptor"/>
+   	 	</mvc:interceptor>
+   	 </mvc:interceptors> -->
+   	 <!-- 定义文件解析器 -->
+   	 <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+   	 	<!-- 设置默认编码 -->
+   	 	<property name="defaultEncoding"  value="utf-8"></property>
+   	 	 <!-- 设置最大上传大小  5M-->
+   	 	 <property name="maxUploadSize" value="524244000"></property>
+   	 </bean>
+ </beans> 	 

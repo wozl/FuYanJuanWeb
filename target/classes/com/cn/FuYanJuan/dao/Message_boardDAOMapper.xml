@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.FuYanJuan.dao.Message_boardDAO">
+	<sql id="list">
+		id,Commenter,Content,Time
+	</sql>
+	<insert id="AddMessage">
+		insert into message_board values(null,#{Commenter},#{Content},#{Time});
+	</insert>
+	<select id="AllMessage"  resultType="Message_board">
+		SELECT <include refid="list"/> FROM message_board GROUP BY TIME DESC;
+	</select>
+</mapper>

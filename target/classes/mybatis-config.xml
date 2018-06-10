@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>  
+        <!-- 打印查询语句 -->  
+        <setting name="logImpl" value="STDOUT_LOGGING" />  
+    </settings>
+	<!--托管bean 取别名  -->
+	<typeAliases>
+		<typeAlias type="com.cn.FuYanJuan.bean.Users" alias="Users"/>
+		<typeAlias type="com.cn.FuYanJuan.bean.Article" alias="Article"/>
+		<typeAlias type="com.cn.FuYanJuan.bean.Message_board" alias="Message_board"/>
+		<typeAlias type="com.cn.FuYanJuan.bean.Photo_wall" alias="Photo_wall"/>
+	</typeAliases>
+
+	<!-- 映射到dao层对应的配置文件 -->
+	<mappers>
+		<mapper class="com.cn.FuYanJuan.dao.UsersDAO"/>
+		<mapper class="com.cn.FuYanJuan.dao.ArticleDAO"/>
+		<mapper class="com.cn.FuYanJuan.dao.Message_boardDAO"/>
+		<mapper class="com.cn.FuYanJuan.dao.Photo_wallDAO"/>
+	</mappers>
+    
+</configuration>

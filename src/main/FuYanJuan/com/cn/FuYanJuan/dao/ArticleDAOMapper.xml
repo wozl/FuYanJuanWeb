@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.FuYanJuan.dao.ArticleDAO">
+	<resultMap type="com.cn.FuYanJuan.bean.Article" id="BaseResultMap">
+		<id column="id"  property="id"  jdbcType="INTEGER" />
+		<result column="Title" property="Title"  jdbcType="VARCHAR" />
+		<result  column="Issuing_Time" property="Issuing_Time" jdbcType="VARCHAR" />
+		<result column="Author" property="Author"  jdbcType="INTEGER"/>
+		<result column="Content" property="Content" jdbcType="BLOB"/>
+		<result column="Commentator" property="Commentator" jdbcType="VARCHAR"/>
+		<result column="Comment" property="Comment" jdbcType="BLOB"/>
+		<result column="Status" property="Status" jdbcType="INTEGER"/>
+	</resultMap>
+	
+	<resultMap type="com.cn.FuYanJuan.bean.Article" id="ById">
+		<id column="aid"  property="id"  jdbcType="INTEGER" />
+		<result column="Title" property="Title"  jdbcType="VARCHAR" />
+		<result  column="Issuing_Time" property="Issuing_Time" jdbcType="VARCHAR" />
+		<result column="Author" property="Author"  jdbcType="INTEGER"/>
+		<result column="Content" property="Content" jdbcType="BLOB"/>
+		<result column="Commentator" property="Commentator" jdbcType="VARCHAR"/>
+		<result column="Comment" property="Comment" jdbcType="BLOB"/>
+		<result column="Status" property="Status" jdbcType="INTEGER"/>
+		<association property="users" javaType="Users">
+			<id column="id"  property="id"/>
+			<result column="UserName" property="UserName"/>
+			<result column="PassWord" property="PassWord"/>
+			<result column="Registration_Time" property="Registration_Time"/>
+			<result column="isadmin" property="isadmin"/>
+		</association>
+	</resultMap>
+	
+	<sql id="list">
+		id,Title,Issuing_Time,Author,Content,Commentator,Comment,Status
+	</sql>
+	<select id="selectNormal" resultType="Article">
+		select <include refid="list"/> from article where Status=0;
+	</select>
+	<select id="selectByAuthorId" parameterType="int" resultType="Article">
+		select <include refid="list"/> from article where Status=0 and Author=#{arg0};
+	</select>
+	<select id="selectByTitle" parameterType="string" resultType="Article">
+		select <include refid="list"/> from article where Title=#{arg0};
+	</select>
+	<insert id="InsertArticle">
+		insert into article values(null,#{Title},#{Issuing_Time},#{Author},#{Content},#{Commentator},#{Comment},0);
+	</insert>
+	<select id="findByPage" parameterType="map" resultMap="BaseResultMap">
+		select <include refid="list"/> from article 
+		<if test="start!=null and size!=null">
+		limit #{start},#{size}
+		</if>
+	</select>
+	<select id="findById" parameterType="map" resultMap="ById">
+		SELECT users.`ID`,users.`UserName`,article.`ID` aid,article.`Title`,article.`Issuing_Time`,article.`Author`,article.`Content`,article.`Commentator`,article.`Comment` FROM
+		users,article
+		WHERE users.`ID`=article.`Author` AND article.`Status`=0 AND users.`ID`=#{id} GROUP BY article.`Issuing_Time` DESC
+		<if test="start!=null and size!=null">
+		limit #{start},#{size}
+		</if>
+		;
+	</select>
+	<select id="findAll" parameterType="map" resultMap="ById">
+		SELECT users.`ID`,users.`UserName`,article.`ID` aid,article.`Title`,article.`Issuing_Time`,article.`Author`,article.`Content`,article.`Commentator`,article.`Comment` FROM
+		users,article
+		WHERE users.`ID`=article.`Author` AND article.`Status`=0 GROUP BY article.`Issuing_Time` DESC
+		<if test="start!=null and size!=null">
+		limit #{start},#{size}
+		</if>
+		;
+	</select>
+	<select id="selectBytitle" parameterType="string" resultMap="ById">
+		SELECT users.`ID`,users.`UserName`,article.`ID` aid,article.`Title`,article.`Issuing_Time`,article.`Author`,article.`Content`,article.`Commentator`,article.`Comment` FROM users,article WHERE users.`ID`=article.`Author` AND article.`Status`=0 AND article.`Title`=#{arg0};
+	</select>
+	<select id="SearchByTitle" parameterType="string" resultMap="BaseResultMap">
+		SELECT article.`Title` FROM article WHERE article.`Title` LIKE "" #{arg0} "%" AND article.`Status`=0;
+	</select>
+</mapper>

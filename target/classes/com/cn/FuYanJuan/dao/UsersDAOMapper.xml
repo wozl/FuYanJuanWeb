@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.FuYanJuan.dao.UsersDAO">
+	<sql id="list">
+		id,UserName,PassWord,Registration_Time,isadmin
+	</sql>
+	<resultMap type="com.cn.FuYanJuan.bean.Users" id="findAll">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="UserName" property="UserName" jdbcType="VARCHAR"/>
+		<result column="PassWord" property="PassWord" jdbcType="VARCHAR"/>
+		<result column="Registration_Time" property="Registration_Time" jdbcType="VARCHAR"/>
+		<result column="isadmin" property="isadmin" jdbcType="INTEGER"/>
+	</resultMap>
+	<insert id="addUser">
+		insert into users values(null,#{UserName},#{PassWord},#{Registration_Time},0);
+	</insert>
+	<select id="selectByName" parameterType="string" resultType="Users">
+		select <include refid="list"/> from users where UserName=#{UserName,jdbcType=VARCHAR};
+	</select>
+	<select id="selectByNames" parameterType="string" resultType="Users">
+		select <include refid="list"/> from users where UserName=#{UserName,jdbcType=VARCHAR};
+	</select>
+	<select id="selectLogin" parameterType="string" resultType="Users">
+		select <include refid="list"/> from users where UserName=#{arg0} and PassWord=#{arg1}
+	</select>
+	<select id="checkAdmin" parameterType="string" resultType="Users">
+		select <include refid="list"/> from users where UserName=#{arg0} and isadmin=1;
+	</select>
+	<select id="selectById" parameterType="int" resultType="Users">
+		select <include refid="list"/> from users where id=#{arg0};
+	</select>
+	<select id="selectAll" parameterType="map" resultMap="findAll">
+		SELECT <include refid="list"/> FROM users WHERE isadmin ='0' GROUP BY Registration_Time DESC
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+		;	
+	</select>
+	<select id="SearchByName" parameterType="string" resultMap="findAll">
+		SELECT users.`UserName` FROM users WHERE users.`UserName` LIKE "" #{arg0} "%" AND users.`isadmin`=0;
+	</select>
+	<update id="updateUserPwd" parameterType="com.cn.FuYanJuan.bean.Users" >
+		update users set PassWord=#{PassWord} where id=#{id} and UserName=#{UserName};
+	</update>
+	<update id="updatepass" parameterType="com.cn.FuYanJuan.bean.Users">
+		update users set PassWord=#{PassWord} where UserName=#{UserName};
+	</update>
+</mapper>
